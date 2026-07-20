@@ -26,7 +26,7 @@ function App(){
     try{
       setCreating(true);
       
-      const response = await fetch("http://localhost:5000/create", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/create`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -58,7 +58,7 @@ function App(){
   const copyClipboard = async () => {
     await navigator.clipboard.writeText(retrievedContent);
     setCopied(true);
-    await fetch(`http://localhost:5000/clip/${retrievedId}`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/clip/${retrievedId}`, {
       method: "DELETE"
     });
 
@@ -94,7 +94,7 @@ function App(){
       setError("");
       setRetrievedContent("");
       
-      const response = await fetch(`http://localhost:5000/clip/${searchCode}`);
+const response = await fetch(`${import.meta.env.VITE_API_URL}/clip/${searchCode}`);
       
       if(!response.ok){
         const data = await response.json();
@@ -116,7 +116,7 @@ function App(){
   };
   
   const getHistory = async () => {
-  const response = await fetch("http://localhost:5000/history");
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/history`);
   const data = await response.json();
 
   setHistory(data);
