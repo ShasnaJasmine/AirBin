@@ -1,0 +1,9 @@
+POST http://localhost:5000/create
+Content-Type: application/json
+
+{
+  "content": "Hello from my phone"
+}
+
+###
+GET http://localhost:5000/clip/0tm4mb

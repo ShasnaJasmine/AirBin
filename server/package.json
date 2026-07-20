@@ -1,0 +1,29 @@
+{
+  "name": "otac-server",
+  "version": "1.0.0",
+  "description": "Backend for Over The Air Clipboard",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "clipboard",
+    "express",
+    "nodejs",
+    "otac"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "lucide-react": "^1.25.0",
+    "mongoose": "^8.18.0",
+    "nanoid": "^5.1.5",
+    "socket.io": "^4.8.3"
+  }
+}

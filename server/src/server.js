@@ -1,0 +1,129 @@
+const express = require("express");
+const cors = require("cors");
+const { nanoid } = require("nanoid");
+const db = require("./database/db");
+const http = require("http");
+const { Server } = require("socket.io");
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "DELETE"]
+  }
+});
+io.on("connection", (socket) => {
+  console.log("Client connected:", socket.id);
+
+  socket.on("join-room", (roomId) => {
+    socket.join(roomId);
+    console.log(`Rooms for ${socket.id}:`, [...socket.rooms]);
+    console.log(socket.rooms);
+    console.log(`${socket.id} joined ${roomId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
+  });
+});
+app.use(cors());
+app.use(express.json());
+const PORT = 5000;
+app.get("/",(req,res) => {
+  res.send("OTAC server is Running");
+});
+
+app.post("/create",(req , res) => {
+  console.log(req.body);
+
+  const content = req.body.content;
+  const id = nanoid(6);
+
+  const created_at = Date.now();
+  const expires_at = created_at + 5 * 60 * 1000;
+  const status = "active";
+
+  console.log(id);
+
+  const statement = db.prepare(`
+    INSERT INTO clips (id , content , status , created_at , expires_at)
+    VALUES(? , ? , ? , ? , ?)
+  `);
+
+  statement.run(id , content , status , created_at , expires_at);
+
+  res.json({
+    id,
+    expires_at
+  });
+});
+
+app.get("/clip/:id", (req , res) => {
+  const id = req.params.id;
+  console.log(id);
+
+  const statement = db.prepare(`
+    SELECT * FROM clips
+    WHERE id = ?
+  `);
+
+  const clip = statement.get(id);
+  
+  if(!clip){
+    return res.status(404).json({
+      message: "clipboard not found"
+    });
+
+  }
+
+  const currentTime = Date.now();
+
+  if(currentTime > clip.expires_at){
+    return res.status(410).json({
+      message:"clipboard has expires"
+    });
+  }
+
+  console.log(clip);
+
+  res.json({
+    content: clip.content
+  });
+});
+
+app.delete("/clip/:id", (req, res) => {
+  const id = req.params.id;
+
+  const statement = db.prepare(`
+    UPDATE clips
+    SET status = ?
+    WHERE id = ?
+  `);
+  
+  statement.run("consumed", id);
+
+  console.log("Emitting to room:", id);
+  io.to(id).emit("clipboard-consumed");
+
+  console.log(`Clipboard ${id} consumed`);
+
+  res.json({
+    message: "Clipboard marked as consumed"
+  });
+});
+
+app.get("/history", (req, res) => {
+  const statement = db.prepare(`
+    SELECT *
+    FROM clips
+    ORDER BY created_at DESC
+  `);
+
+  const history = statement.all();
+
+  res.json(history);
+});
+
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
