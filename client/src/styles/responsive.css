@@ -1,0 +1,156 @@
+/* =========================
+   Laptop
+========================= */
+
+@media (max-width:1200px){
+
+    .container{
+        padding:20px;
+    }
+
+}
+
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width:900px){
+
+    .container{
+        padding:16px;
+    }
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .send-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:16px;
+    }
+
+    .generate-row{
+        grid-template-columns:1fr;
+    }
+
+    .bottom-row{
+        grid-template-columns:1fr;
+    }
+
+    .input-row{
+        grid-template-columns:1fr;
+    }
+
+    .clipboard-layout{
+        grid-template-columns:1fr;
+    }
+
+    .clipboard-actions{
+        flex-direction:row;
+        gap:12px;
+    }
+
+    .clipboard-actions button{
+        flex:1;
+    }
+
+    .history-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:16px;
+    }
+
+    .history-tools{
+        width:100%;
+        flex-direction:column;
+    }
+
+    .search-box{
+        width:100%;
+        max-width:none;
+    }
+
+    .filter-btn{
+        width:100%;
+    }
+
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width:600px){
+
+    .container{
+        padding:12px;
+    }
+
+    .send-card,
+    .receive-card,
+    .history-card{
+        padding:16px;
+    }
+
+    .send-title h2,
+    .receive-header h2{
+        font-size:1.4rem;
+    }
+
+    .history-title h2{
+        font-size:1.3rem;
+    }
+
+    .logo{
+        font-size:1.5rem;
+    }
+
+    .expire-chip{
+        width:100%;
+        justify-content:center;
+    }
+
+    .mode-switch{
+        grid-template-columns:1fr;
+    }
+
+    .mode-switch button{
+        width:100%;
+    }
+
+    .clipboard-actions{
+        flex-direction:column;
+    }
+
+    .copy-btn,
+    .qr-card{
+        width:100%;
+    }
+
+}
+
+/* =========================
+   Small Phones
+========================= */
+
+@media (max-width:400px){
+
+    .container{
+        padding:10px;
+    }
+
+    .generate-btn,
+    .copy-btn{
+        font-size:.9rem;
+    }
+
+    .status-card h3{
+        font-size:1rem;
+    }
+
+    .mode-switch button{
+        font-size:.85rem;
+    }
+
+}
